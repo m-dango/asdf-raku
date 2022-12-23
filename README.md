@@ -1,3 +1,5 @@
+![workflow](https://github.com/m-dango/asdf-raku/actions/workflows/main.yml/badge.svg)
+
 Under development
 
 Downloads and installs a precompiled Rakudo, including the Zef module manager.
