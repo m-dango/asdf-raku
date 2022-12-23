@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+source "$(dirname "$0")/utils.sh"
+
+http_download() {
+  local url=$1
+  local file=$2
+  local tmp_file="${file}/rakudo.tar.gz.$(date +%s)"
+  local ret=1
+  if curl --version &>/dev/null; then
+    curl -fsSL -o $tmp_file $url
+    ret=$?
+  elif wget --version &>/dev/null; then
+    wget -q -O $tmp_file $url
+    ret=$?
+  else
+    die "Need curl or wget"
+  fi
+  if [[ $ret -eq 0 ]]; then
+    mv $tmp_file "${file}/rakudo.tar.gz"
+  else
+    rm -f $tmp_file
+    return 1
+  fi
+  echo $file
+}
+
+http_download "$(download_url $ASDF_INSTALL_VERSION)" $ASDF_DOWNLOAD_PATH
