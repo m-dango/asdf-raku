@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+rakudo_paths() {
+  echo 'bin share/perl6/site/bin'
+}
+
+rakudo_paths
