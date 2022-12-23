@@ -22,7 +22,6 @@ http_download() {
     rm -f $tmp_file
     return 1
   fi
-  echo $file
 }
 
 http_download "$(download_url $ASDF_INSTALL_VERSION)" $ASDF_DOWNLOAD_PATH
