@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+set -e
+
 install_rakudo() {
   local download=$1
   local install=$2
+  echo "Installing rakudo.tar.gz to $install ..."
   tar -xf "${download}/rakudo.tar.gz" -C $install --strip-components 1
+  echo "Install complete!"
 }
 
 install_rakudo $ASDF_DOWNLOAD_PATH $ASDF_INSTALL_PATH
