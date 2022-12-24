@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 source "$(dirname "$0")/../lib/utils.sh"
 
 http_download() {
@@ -43,4 +45,4 @@ http_download() {
   fi
 }
 
-http_download $ASDF_INSTALL_VERSION $ASDF_DOWNLOAD_PATH $ASDF_INSTALL_TYPE
+http_download "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_TYPE"
