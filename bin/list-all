@@ -3,13 +3,7 @@
 source "$(dirname "$0")/../lib/utils.sh"
 
 list_all() {
-  local platform=$(platform)
-  local archname=$(archname)
-  http_get 'https://raw.githubusercontent.com/skaji/rakudo-releases/main/rakudo-releases.v1.csv' | \
-    grep ,archive, | \
-    grep ,moar, | \
-    grep ",$platform," | \
-    grep ",$archname," | \
+  get_available_releases | \
     cut -d, -f11 | \
     sort | \
     tr '\n' ' '

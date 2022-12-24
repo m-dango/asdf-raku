@@ -6,6 +6,7 @@ http_download() {
   local version=$1
   local path=$2
   local install_type=$3
+  local file="${path}/$(tar_filename)"
 
   local url="$(download_url $version)"
 
@@ -19,9 +20,9 @@ http_download() {
     exit 1
   fi
 
-  local tmp_file="${path}/rakudo.tar.gz.$(date +%s)"
+  local tmp_file="${file}.$(date +%s)"
   local ret=1
-  echo "Downloading $url to ${path}/rakudo.tar.gz ..."
+  echo "Downloading $url to $file ..."
   if curl --version &>/dev/null; then
     curl -fsSL -o $tmp_file $url
     ret=$?
@@ -33,7 +34,7 @@ http_download() {
     exit 1
   fi
   if [[ $ret -eq 0 ]]; then
-    mv $tmp_file "${path}/rakudo.tar.gz"
+    mv $tmp_file $file
     echo "Download complete!"
   else
     rm -f $tmp_file
