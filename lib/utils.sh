@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+tar_filename() {
+  echo rakudo.tar.gz
+}
+
 http_get() {
   local url=$1
   if curl --version &>/dev/null; then
@@ -14,15 +18,21 @@ http_get() {
 
 download_url() {
   local version=$1
-  local platform=$(platform)
-  local archname=$(archname)
+
+  get_available_releases | \
+    grep ",$version," | \
+    cut -d, -f9
+}
+
+get_available_releases() {
+  local platform="$(platform)"
+  local archname="$(archname)"
+
   http_get 'https://raw.githubusercontent.com/skaji/rakudo-releases/main/rakudo-releases.v1.csv' | \
     grep ,archive, | \
     grep ,moar, | \
     grep ",$platform," | \
-    grep ",$archname," | \
-    grep ",$version," | \
-    cut -d, -f9
+    grep ",$archname,"
 }
 
 platform() {
