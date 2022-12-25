@@ -16,10 +16,9 @@ asdf install raku latest
 
 By default, downloads and installs a precompiled Rakudo, including the Zef module manager.
 
-If you set the `$ASDF_RAKU_BUILD` environment variable, Rakudo will instead be built from source, and will not include Zef. Additional deps will also be required (and can be found [here](https://rakudo.org/downloads/rakudo/source).
+If you set the `$ASDF_RAKU_BUILD` environment variable, Rakudo will instead be built from source, and will not include Zef. Additional deps will also be required (which are listed [here](https://rakudo.org/downloads/rakudo/source)).
 
 You can choose your build backends using the `$ASDF_RAKU_BACKENDS` environment variable.
-
 
 ## Use
 
