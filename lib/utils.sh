@@ -21,6 +21,7 @@ download_url() {
 
   get_available_releases | \
     grep ",$version," | \
+    head -n 1 | \
     cut -d, -f9
 }
 
