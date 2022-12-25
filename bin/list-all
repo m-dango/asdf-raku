@@ -8,7 +8,7 @@ list_all() {
   get_available_releases \
     | cut -d, -f11 \
     | cut -d- -f1 \
-    | sort \
+    | sort -u \
     | tr '\n' ' '
 }
 
