@@ -6,25 +6,26 @@
 
 ## Install
 
+Depends on `bash`, `curl`/`wget`, and `tar`.
+
 ```
 asdf plugin add raku https://github.com/m-dango/asdf-raku.git
 asdf list all raku
 asdf install raku latest
 ```
 
-Depends on `bash`, `curl`/`wget`, and `tar`.
+By default, downloads and installs a precompiled Rakudo, including the Zef module manager.
+
+If you set the `$ASDF_RAKU_BUILD` environment variable, Rakudo will instead be built from source, and will not include Zef. Additional deps will also be required (and can be found [here](https://rakudo.org/downloads/rakudo/source).
+
+You can choose your build backends using the `$ASDF_RAKU_BACKENDS` environment variable.
+
 
 ## Use
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Raku.
 
 ## Notes
-
-By default, downloads and installs a precompiled Rakudo, including the Zef module manager.
-
-If you set the `$ASDF_RAKU_BUILD` environment variable, Rakudo will instead be built from source, and will not include Zef.
-
-You can choose your build backends using the `$ASDF_RAKU_BACKENDS` environment variable.
 
 Rakudo versions sourced from [skaji/rakudo-releases](https://github.com/skaji/rakudo-releases).
 
