@@ -9,8 +9,29 @@ install_rakudo() {
   local install=$2
   local filename=$(tar_filename)
   echo "Installing $filename to $install ..."
-  tar -xf "${download}/$filename" -C $install --strip-components 1
+  tar -xf "${download}/$filename" -C "$install" --strip-components 1
   echo "Install complete!"
 }
 
-install_rakudo "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"
+build_and_install_rakudo() {
+  local download=$1
+  local install=$2
+  local filename=$(tar_filename)
+  local backends=${ASDF_RAKU_BACKENDS:-moar}
+  local gen_moar=""
+
+  echo $backends | grep -iE 'moar|all' >/dev/null && gen_moar="--gen-moar"
+
+  echo "Building Rakudo ..."
+  tar -xf "${download}/$filename" -C "$download" --strip-components 1
+  cd "$download"
+  perl Configure.pl --backends="$backends" "$gen_moar" --gen-nqp --prefix="$install"
+  rm -rf "${download}/nqp"
+  make install -j"${ASDF_CONCURRENCY:-1}"
+}
+
+if [ ${ASDF_RAKU_BUILD:-} ]; then
+  build_and_install_rakudo "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"
+else
+  install_rakudo "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"
+fi

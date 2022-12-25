@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/m-dango/asdf-raku/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/m-dango/asdf-raku/actions/workflows/main.yml?query=branch%3Amain++)
 
-[Raku](https://raku.org/) plugin for [asdf](https://github.com/asdf-vm/asdf).
+[Raku](https://raku.org/) plugin for the [asdf](https://github.com/asdf-vm/asdf) version manager.
 
 ## Install
 
@@ -20,7 +20,11 @@ Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to 
 
 ## Notes
 
-Downloads and installs a precompiled Rakudo, including the Zef module manager.
+By default, downloads and installs a precompiled Rakudo, including the Zef module manager.
+
+If you set the `$ASDF_RAKU_BUILD` environment variable, Rakudo will instead be built from source, and will not include Zef.
+
+You can choose your build backends using the `$ASDF_RAKU_BACKENDS` environment variable.
 
 Rakudo versions sourced from [skaji/rakudo-releases](https://github.com/skaji/rakudo-releases).
 
