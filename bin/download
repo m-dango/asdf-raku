@@ -10,11 +10,16 @@ http_download() {
   local install_type=$3
   local file="${path}/$(tar_filename)"
 
-  local url="$(download_url $version)"
-
   if [ "$install_type" != "version" ]; then
     echo "Install type '$install_type' not supported."
     exit 1
+  fi
+
+  local url
+  if [ "${ASDF_RAKU_BUILD:-}" ]; then
+    url="https://rakudo.org/dl/rakudo/rakudo-$version.tar.gz"
+  else
+    url="$(download_url $version)"
   fi
 
   if [ -z "$url" ]; then

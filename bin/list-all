@@ -5,10 +5,11 @@ set -euo pipefail
 source "$(dirname "$0")/../lib/utils.sh"
 
 list_all() {
-  get_available_releases | \
-    cut -d, -f11 | \
-    sort | \
-    tr '\n' ' '
+  get_available_releases \
+    | cut -d, -f11 \
+    | cut -d- -f1 \
+    | sort \
+    | tr '\n' ' '
 }
 
 list_all
