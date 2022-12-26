@@ -11,7 +11,7 @@ http_download() {
   local file="${path}/$(tar_filename)"
 
   if [ "$install_type" != "version" ]; then
-    echo "Install type '$install_type' not supported."
+    echo "Install type '$install_type' not supported." >&2
     exit 1
   fi
 
@@ -19,7 +19,7 @@ http_download() {
   if [ "${ASDF_RAKU_BUILD:-}" ]; then
     url="https://rakudo.org/dl/rakudo/rakudo-$version.tar.gz"
   else
-    url="$(download_url $version)" || ( echo "URL not found for version '$version'." && exit 1 )
+    url="$(download_url $version)" || ( echo "URL not found for version '$version'." >&2 && exit 1 )
   fi
 
   local tmp_file="${file}.$(date +%s)"
@@ -32,7 +32,7 @@ http_download() {
     wget -q -O $tmp_file $url
     ret=$?
   else
-    echo "'curl' or 'wget' required."
+    echo "'curl' or 'wget' required." >&2
     exit 1
   fi
   if [[ $ret -eq 0 ]]; then
@@ -40,7 +40,7 @@ http_download() {
     echo "Download complete!"
   else
     rm -f $tmp_file
-    echo "Download error. Exiting."
+    echo "Download error. Exiting." >&2
     exit 1
   fi
 }
