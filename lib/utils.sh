@@ -11,7 +11,7 @@ http_get() {
   elif wget --version &>/dev/null; then
     wget -q -O - $url
   else
-    echo "'curl' or 'wget' required."
+    echo "'curl' or 'wget' required." >&2
     exit 1
   fi
 }
@@ -43,7 +43,7 @@ platform() {
   elif [[ $uname = "Linux" ]]; then
     echo linux
   else
-    echo "Unsupported platform '$uname'"
+    echo "Unsupported platform '$uname'." >&2
     exit 1
   fi
 }
@@ -55,7 +55,7 @@ archname() {
   elif [[ $uname = "arm64" ]]; then
     echo arm64
   else
-    echo "Unsupported archname '$uname'"
+    echo "Unsupported archname '$uname'." >&2
     exit 1
   fi
 }

@@ -19,12 +19,7 @@ http_download() {
   if [ "${ASDF_RAKU_BUILD:-}" ]; then
     url="https://rakudo.org/dl/rakudo/rakudo-$version.tar.gz"
   else
-    url="$(download_url $version)"
-  fi
-
-  if [ -z "$url" ]; then
-    echo "URL not found for version '$version'."
-    exit 1
+    url="$(download_url $version)" || ( echo "URL not found for version '$version'." && exit 1 )
   fi
 
   local tmp_file="${file}.$(date +%s)"
