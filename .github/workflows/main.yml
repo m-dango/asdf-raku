@@ -21,10 +21,12 @@ jobs:
           - macos-latest
           - ubuntu-latest
         source-build:
-          - 0
-          - 1
+          - null
+          - true
 
     runs-on: ${{ matrix.os }}
+
+    name: asdf-raku on ${{ matrix.os }} (ASDF_RAKU_BUILD=${{ matrix.source-build }})
 
     steps:
       - name: Checkout code
