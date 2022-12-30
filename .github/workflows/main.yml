@@ -20,6 +20,9 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
+        source-build:
+          - 0
+          - 1
 
     runs-on: ${{ matrix.os }}
 
@@ -37,5 +40,7 @@ jobs:
 
       - name: Test plugin
         uses: asdf-vm/actions/plugin-test@v1
+        env:
+          ASDF_RAKU_BUILD: ${{ matrix.source-build }}
         with:
           command: raku --version
