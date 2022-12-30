@@ -20,8 +20,13 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
+        source-build:
+          - null
+          - true
 
     runs-on: ${{ matrix.os }}
+
+    name: asdf-raku on ${{ matrix.os }} (ASDF_RAKU_BUILD=${{ matrix.source-build }})
 
     steps:
       - name: Checkout code
@@ -37,5 +42,7 @@ jobs:
 
       - name: Test plugin
         uses: asdf-vm/actions/plugin-test@v1
+        env:
+          ASDF_RAKU_BUILD: ${{ matrix.source-build }}
         with:
           command: raku --version
