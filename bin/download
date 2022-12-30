@@ -31,7 +31,7 @@ http_download() {
     curl -fsSL -o "${path}/${filename}" "${url_path}/${filename}" \
       && curl -fsSL -o "${path}/${filename}.checksums.txt" "${url_path}/${filename}.checksums.txt"
   elif wget --version &>/dev/null; then
-    wget -q -O $tmp_file $url \
+    wget -q -O "${path}/${filename}" "${url_path}/${filename}" \
       && wget -q -O "${path}/${filename}.checksums.txt" "${url_path}/${filename}.checksums.txt"
   else
     die "'curl' or 'wget' required."
