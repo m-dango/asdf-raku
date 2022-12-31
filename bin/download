@@ -10,7 +10,7 @@ http_download() {
   local install_type=$3
   local url_path="https://rakudo.org/dl/rakudo"
 
-  rm -rf "${path}/*"
+  rm --preserve-root -rf "${path}/*"
 
   if [ "$install_type" != "version" ]; then
     die "Install type '$install_type' not supported."
