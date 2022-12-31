@@ -23,10 +23,16 @@ jobs:
         source-build:
           - null
           - true
+        downloader:
+          - curl
+        include:
+          - os: ubuntu-latest
+            downloader: wget
+            source-build: null
 
     runs-on: ${{ matrix.os }}
 
-    name: asdf-raku on ${{ matrix.os }} (ASDF_RAKU_BUILD=${{ matrix.source-build }})
+    name: asdf-raku on ${{ matrix.os }} using ${{ matrix.downloader }} (ASDF_RAKU_BUILD=${{ matrix.source-build }})
 
     steps:
       - name: Checkout code
@@ -34,7 +40,7 @@ jobs:
 
       - name: Install system packages on Ubuntu
         if: ${{ runner.os == 'Linux' }}
-        run: sudo apt-get install curl
+        run: sudo apt-get install ${{ matrix.downloader }}
 
       - name: Install system packages on macOS
         if: ${{ runner.os == 'macOS' }}
