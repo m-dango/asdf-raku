@@ -38,9 +38,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install system packages on Ubuntu
-        if: ${{ runner.os == 'Linux' }}
-        run: sudo apt-get install ${{ matrix.downloader }}
+      - name: Remove curl
+        if: ${{ matrix.downloader == 'wget' }}
+        run: sudo apt-get remove curl
 
       - name: Install system packages on macOS
         if: ${{ runner.os == 'macOS' }}
