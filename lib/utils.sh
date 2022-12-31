@@ -42,24 +42,22 @@ get_available_releases() {
 
 platform() {
   local uname=$(uname -s)
-  if [[ $uname = "Darwin" ]]; then
+  if [ "$uname" = "Darwin" ]; then
     echo macos
-  elif [[ $uname = "Linux" ]]; then
+  elif [ "$uname" = "Linux" ]; then
     echo linux
   else
-    echo "Unsupported platform '$uname'." >&2
-    exit 1
+    die "Unsupported platform '$uname'."
   fi
 }
 
 archname() {
   local uname=$(uname -m)
-  if [[ $uname = "x86_64" ]]; then
+  if [ "$uname" = "x86_64" ]; then
     echo x86_64
-  elif [[ $uname = "arm64" ]]; then
+  elif [ "$uname" = "arm64" ]; then
     echo arm64
   else
-    echo "Unsupported archname '$uname'." >&2
-    exit 1
+    die "Unsupported archname '$uname'."
   fi
 }

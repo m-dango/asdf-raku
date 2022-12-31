@@ -10,8 +10,6 @@ http_download() {
   local install_type=$3
   local url_path="https://rakudo.org/dl/rakudo"
 
-  rm --preserve-root -rf "${path}/*"
-
   if [ "$install_type" != "version" ]; then
     die "Install type '$install_type' not supported."
   fi
@@ -20,7 +18,12 @@ http_download() {
   if [ "${ASDF_RAKU_BUILD:-}" ]; then
     filename="rakudo-$version.tar.gz"
     # checksum expects this file to be inside rakudo dir
-    mkdir "${path}/rakudo"
+    if [ ! -d "${path}/rakudo" ]; then
+      mkdir "${path}/rakudo"
+    fi
+    if [ -e "${path}/rakudo/${filename}" ]; then
+      rm "${path}/rakudo/${filename}"
+    fi
     ln -s "${path}/${filename}" "${path}/rakudo/${filename}"
   else
     filename="$(filename $version)" || die "URL not found for version '$version'."
@@ -40,7 +43,7 @@ http_download() {
   cd $path
   sha256sum --status -c "${path}/${filename}.checksums.txt"
 
-  if [ $? -eq 0 ]; then
+  if [ "$?" -eq 0 ]; then
     echo "Download complete!"
   else
     die "Checksum verification failure."
