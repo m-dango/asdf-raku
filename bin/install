@@ -7,23 +7,24 @@ source "$(dirname "$0")/../lib/utils.sh"
 install_rakudo() {
   local download=$1
   local install=$2
-  local filename=$(tar_filename)
-  echo "Installing $filename to $install ..."
-  tar -xf "${download}/$filename" -C "$install" --strip-components 1
+  local version=$3
+
+  echo "Installing Rakudo $version to $install ..."
+  tar -xf "${download}/$(filename $version)" -C "$install" --strip-components 1
   echo "Install complete!"
 }
 
 build_and_install_rakudo() {
   local download=$1
   local install=$2
-  local filename=$(tar_filename)
+  local version=$3
   local backends=${ASDF_RAKU_BACKENDS:-moar}
   local gen_moar=""
 
   echo $backends | grep -iE 'moar|all' >/dev/null && gen_moar="--gen-moar"
 
   echo "Building Rakudo ..."
-  tar -xf "${download}/$filename" -C "$download" --strip-components 1
+  tar -xf "${download}/rakudo-${version}.tar.gz" -C "$download" --strip-components 1
   cd "$download"
   perl Configure.pl --backends="$backends" "$gen_moar" --gen-nqp --prefix="$install"
   rm -rf "${download}/nqp"
@@ -31,7 +32,7 @@ build_and_install_rakudo() {
 }
 
 if [ ${ASDF_RAKU_BUILD:-} ]; then
-  build_and_install_rakudo "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"
+  build_and_install_rakudo "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH" "$ASDF_INSTALL_VERSION"
 else
-  install_rakudo "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"
+  install_rakudo "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH" "$ASDF_INSTALL_VERSION"
 fi

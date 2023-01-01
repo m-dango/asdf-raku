@@ -8,40 +8,45 @@ http_download() {
   local version=$1
   local path=$2
   local install_type=$3
-  local file="${path}/$(tar_filename)"
+  local url_path="https://rakudo.org/dl/rakudo"
 
   if [ "$install_type" != "version" ]; then
-    echo "Install type '$install_type' not supported." >&2
-    exit 1
+    die "Install type '$install_type' not supported."
   fi
 
-  local url
+  local filename
   if [ "${ASDF_RAKU_BUILD:-}" ]; then
-    url="https://rakudo.org/dl/rakudo/rakudo-$version.tar.gz"
+    filename="rakudo-$version.tar.gz"
+    # checksum expects this file to be inside rakudo dir
+    if [ ! -d "${path}/rakudo" ]; then
+      mkdir "${path}/rakudo"
+    fi
+    if [ -e "${path}/rakudo/${filename}" ]; then
+      rm "${path}/rakudo/${filename}"
+    fi
+    ln -s "${path}/${filename}" "${path}/rakudo/${filename}"
   else
-    url="$(download_url $version)" || ( echo "URL not found for version '$version'." >&2 && exit 1 )
+    filename="$(filename $version)" || die "URL not found for version '$version'."
   fi
 
-  local tmp_file="${file}.$(date +%s)"
-  local ret=1
-  echo "Downloading $url to $file ..."
+  echo "Downloading $filename to $path ..."
   if curl --version &>/dev/null; then
-    curl -fsSL -o $tmp_file $url
-    ret=$?
+    curl -fsSL -o "${path}/${filename}" "${url_path}/${filename}" \
+      && curl -fsSL -o "${path}/${filename}.checksums.txt" "${url_path}/${filename}.checksums.txt"
   elif wget --version &>/dev/null; then
-    wget -q -O $tmp_file $url
-    ret=$?
+    wget -q -O "${path}/${filename}" "${url_path}/${filename}" \
+      && wget -q -O "${path}/${filename}.checksums.txt" "${url_path}/${filename}.checksums.txt"
   else
-    echo "'curl' or 'wget' required." >&2
-    exit 1
+    die "'curl' or 'wget' required."
   fi
-  if [[ $ret -eq 0 ]]; then
-    mv $tmp_file $file
+
+  cd $path
+  sha256sum --status -c "${path}/${filename}.checksums.txt"
+
+  if [ "$?" -eq 0 ]; then
     echo "Download complete!"
   else
-    rm -f $tmp_file
-    echo "Download error. Exiting." >&2
-    exit 1
+    die "Checksum verification failure."
   fi
 }
 
